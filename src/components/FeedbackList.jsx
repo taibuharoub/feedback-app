@@ -1,8 +1,11 @@
+import { useContext } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import PropTypes from 'prop-types'
 
 import FeedbackItem from "./FeedbackItem";
-function FeedbackList({ feedback, handleDelete }) {
+import FeedbackContext from '../context/FeedbackContext';
+
+function FeedbackList() {
+  const {feedback} = useContext(FeedbackContext)
   if (!feedback || feedback.length === 0) {
     return <p>No feedback yet</p>;
   }
@@ -19,7 +22,7 @@ function FeedbackList({ feedback, handleDelete }) {
       <AnimatePresence>
         {feedback.map((item) => (
           <motion.div key={item.id} initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
-            <FeedbackItem key={item.id} item={item} handleDelete={handleDelete} />
+            <FeedbackItem key={item.id} item={item} />
           </motion.div>
         ))}
       </AnimatePresence>
@@ -27,16 +30,5 @@ function FeedbackList({ feedback, handleDelete }) {
   );
 }
 
-FeedbackItem.propTypes = {
-  // feedback: PropTypes.array.isRequired
-  // arrayOf will allow us describe the structure of our array
-  feedback: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      rating: PropTypes.number.isRequired,
-      text: PropTypes.string.isRequired,
-    })
-  )
-}
 
 export default FeedbackList;

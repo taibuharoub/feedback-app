@@ -1,13 +1,17 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+
+import FeedbackContext from "../context/FeedbackContext";
 import Button from "../shared/Button";
 import Card from "../shared/Card";
 import RatingSelect from "./RatingSelect";
 
-function FeedbackForm({ hanleAdd }) {
+function FeedbackForm() {
   const [text, setText] = useState("");
   const [rating, setRating] = useState(10);
   const [btnDisabled, setBtnDisabled] = useState(true);
   const [message, setMessage] = useState("");
+
+  const { addFeedbackHandler } = useContext(FeedbackContext);
 
   const reviewChangeHandle = (event) => {
     if (text === "") {
@@ -30,7 +34,7 @@ function FeedbackForm({ hanleAdd }) {
         rating,
       };
       //   console.log(newFeedback);
-      hanleAdd(newFeedback);
+      addFeedbackHandler(newFeedback);
       setText("");
     }
   };
