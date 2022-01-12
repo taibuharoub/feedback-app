@@ -1,14 +1,4 @@
-import { createContext, useState } from "react";
-
-import FeedbackData from "../data/FeedbackData";
-
-// const initialFeedback = [
-//   {
-//     id: 1,
-//     text: "This item is from context",
-//     rating: 10,
-//   },
-// ];
+import { createContext, useState, useEffect } from "react";
 
 const feedbackEditState = {
   item: {},
@@ -16,18 +6,34 @@ const feedbackEditState = {
 };
 
 const FeedbackContext = createContext({
-  feedback: FeedbackData,
+  feedback: [],
   feedbackEdit: feedbackEditState,
   deleteFeedback: (id) => {},
   addFeedbackHandler: (newFeedback) => {},
   editFeedbackHandler: (itemData) => {},
   updateFeedbackHandler: (id, updatedItem) => {},
+  isLoading: true,
 });
 
 export const FeedbackProvider = ({ children }) => {
-  const [feedback, setFeedback] = useState(FeedbackData);
+  const [isLoading, setIsLoading] = useState(true);
+  const [feedback, setFeedback] = useState([]);
 
   const [feedbackEdit, setFeedbackEdit] = useState(feedbackEditState);
+
+  useEffect(() => {
+    fetchFeedback();
+  }, []);
+
+  // fetech feedback
+  const fetchFeedback = async () => {
+    const response = await fetch(
+      "http://localhost:5000/feedback?_sort=id&_order=desc"
+    );
+    const data = await response.json();
+    setFeedback(data);
+    setIsLoading(false);
+  };
 
   const deleteFeedback = (id) => {
     if (window.confirm("Are you sure you want to delete this feedback?")) {
@@ -72,6 +78,7 @@ export const FeedbackProvider = ({ children }) => {
         addFeedbackHandler,
         editFeedbackHandler,
         updateFeedbackHandler,
+        isLoading,
       }}
     >
       {children}
