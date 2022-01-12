@@ -27,37 +27,46 @@ export const FeedbackProvider = ({ children }) => {
 
   // fetech feedback
   const fetchFeedback = async () => {
-    const response = await fetch(
-      "http://localhost:5000/feedback?_sort=id&_order=desc"
-    );
+    const response = await fetch("/feedback?_sort=id&_order=desc");
     const data = await response.json();
     setFeedback(data);
     setIsLoading(false);
   };
 
-  const deleteFeedback = (id) => {
+  const deleteFeedback = async (id) => {
     if (window.confirm("Are you sure you want to delete this feedback?")) {
+      await fetch(`/feedback/${id}`, { method: "DELETE" });
       setFeedback(feedback.filter((item) => item.id !== id));
     }
   };
 
-  const addFeedbackHandler = (newFeedback) => {
-    console.log(newFeedback);
-    console.log(Math.random().toString());
-    // newFeedback.id = uuidv4()
-    newFeedback.id = Math.random().toString();
+  const addFeedbackHandler = async (newFeedback) => {
+    const response = await fetch("/feedback", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newFeedback),
+    });
+
+    const data = await response.json();
 
     // don't manipulate state directly, make a copy first
-    setFeedback([newFeedback, ...feedback]);
+    setFeedback([data, ...feedback]);
   };
 
   // Update feedback item
-  const updateFeedbackHandler = (id, updatedItem) => {
+  const updateFeedbackHandler = async (id, updatedItem) => {
     console.log(id, updatedItem);
+    const response = await fetch(`/feedback/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updatedItem),
+    });
+    const data = await response.json();
+
     setFeedback(
-      feedback.map((item) =>
-        item.id === id ? { ...item, ...updatedItem } : item
-      )
+      feedback.map((item) => (item.id === id ? { ...item, data } : item))
     );
   };
 
