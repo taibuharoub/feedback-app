@@ -1,0 +1,41 @@
+{
+  "feedback": [
+    {
+      "rating": "10",
+      "text": "This is feedback item 1 from backend",
+      "id": 1
+    },
+    {
+      "rating": "10",
+      "text": "This is feedback item 2 from backend",
+      "id": 2
+    },
+    {
+      "rating": "10",
+      "text": "This is feedback item 3 from backend",
+      "id": 3
+    },
+    {
+      "rating": "9",
+      "text": "This is feedback item 4 from backend",
+      "id": 4
+    },
+    {
+      "rating": "8",
+      "text": "This is feedback item 5 from backend updated",
+      "id": 5
+    }
+  ],
+  "posts": [
+    {
+      "title": "Post 1",
+      "description": "This is an amazing post 1 from backend",
+      "id": 1
+    },
+    {
+      "title": "Post 2",
+      "description": "This is an amazing post 2 from backend",
+      "id": 2
+    }
+  ]
+}
